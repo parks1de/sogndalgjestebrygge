@@ -802,6 +802,134 @@
     .map-link:hover { color: var(--ltblue); }
 
     /* ============================================================
+       CONTACT FORM
+    ============================================================ */
+    .contact-form { display: flex; flex-direction: column; gap: 1.1rem; }
+
+    .cfield { position: relative; }
+
+    .cfield input,
+    .cfield textarea {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--glass-b);
+      border-radius: 14px;
+      padding: 1.3rem 1.2rem .55rem;
+      color: var(--white);
+      font-size: .95rem;
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+      transition: border-color .3s, box-shadow .3s, background .3s;
+    }
+
+    .cfield input::placeholder,
+    .cfield textarea::placeholder { color: transparent; }
+
+    .cfield input:hover,
+    .cfield textarea:hover {
+      border-color: rgba(0,180,216,.35);
+      background: rgba(0,180,216,.04);
+    }
+
+    .cfield input:focus,
+    .cfield textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(0,180,216,.15), 0 8px 30px rgba(0,180,216,.1);
+      background: rgba(0,180,216,.06);
+    }
+
+    .cfield label {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: .92rem;
+      color: rgba(208,232,245,.55);
+      pointer-events: none;
+      transition: top .2s, font-size .2s, color .2s, transform .2s;
+    }
+
+    .cfield textarea ~ label { top: 1.3rem; transform: none; }
+
+    .cfield input:focus ~ label,
+    .cfield input:not(:placeholder-shown) ~ label,
+    .cfield textarea:focus ~ label,
+    .cfield textarea:not(:placeholder-shown) ~ label {
+      top: .45rem;
+      transform: none;
+      font-size: .65rem;
+      color: var(--teal);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* select */
+    .csel-wrap { position: relative; }
+    .csel-wrap select {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--glass-b);
+      border-radius: 14px;
+      padding: 1rem 2.8rem 1rem 1.2rem;
+      color: var(--text);
+      font-size: .92rem;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: border-color .3s, box-shadow .3s, background .3s;
+    }
+    .csel-wrap select:hover  { border-color: rgba(0,180,216,.35); background: rgba(0,180,216,.04); }
+    .csel-wrap select:focus  { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,180,216,.15); background: rgba(0,180,216,.06); }
+    .csel-wrap select option { background: #0d1f35; }
+    .csel-wrap::after {
+      content: '';
+      position: absolute;
+      right: 1.1rem; top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--teal);
+      pointer-events: none;
+    }
+
+    /* submit */
+    .csubmit {
+      display: flex; align-items: center; justify-content: center;
+      gap: .6rem; width: 100%; margin-top: .4rem;
+    }
+    .csubmit .ico-send { width: 1rem; height: 1rem; transition: transform .3s var(--easing); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .csubmit:hover .ico-send { transform: translateX(5px) rotate(-10deg); }
+
+    /* success state */
+    .cform-ok {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(0,119,182,.15), rgba(0,180,216,.1));
+      border: 1px solid rgba(0,180,216,.3);
+      border-radius: 20px;
+    }
+    .cform-ok.show { display: block; animation: fdIn .5s ease; }
+    .cform-ok-ico { width: 3.5rem; height: 3.5rem; stroke: var(--teal); fill: none; display: block; margin: 0 auto 1.2rem; }
+    .cform-ok h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: .5rem; }
+    .cform-ok p  { color: var(--text); font-size: .95rem; line-height: 1.7; }
+
+    /* info row */
+    .info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      max-width: 1060px;
+      margin: 2rem auto 0;
+    }
+
+    @media (max-width: 640px) { .info-row { grid-template-columns: 1fr; } }
+
+    /* ============================================================
        FOOTER
     ============================================================ */
     footer {
@@ -1248,33 +1376,66 @@
           </div>
         </div>
 
-        <!-- Right: app + location -->
+        <!-- Right: contact form -->
         <div class="sr-r">
-          <div class="info-box app-box">
-            <h3><svg class="ibox-ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> GOMARINA-appen</h3>
-            <p>
-              Betaling og oppdatert informasjon om plassane skjer enkelt via GOMARINA.
-              Last ned appen for rask inn- og utsjekk, og alltid oppdaterte prisar.
-            </p>
-            <br>
-            <span style="display:inline-block;padding:.55rem 1.4rem;border-radius:50px;background:linear-gradient(130deg,var(--blue),var(--teal));font-size:.88rem;font-weight:700;color:#fff">
-              Last ned GOMARINA
-            </span>
+          <p class="c-sub">Send oss ei melding</p>
+
+          <!-- success state -->
+          <div class="cform-ok" id="cform-ok">
+            <svg class="cform-ok-ico" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <h3>Melding sendt!</h3>
+            <p>Takk for di førespurnad. Vi kjem tilbake til deg så snart som mogleg.</p>
           </div>
 
-          <div class="info-box">
-            <h3><svg class="ibox-ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Finn oss</h3>
-            <p>
-              Sjøkanten Båtforening ligg midt mellom Hagelin-neset og Sogndalsfjøra —
-              synleg ved innseilinga mot Sogndal sentrum. Lett tilgjengeleg frå fjorden.
-            </p>
-            <a href="https://maps.google.com/?q=Sogndal+Gjestebrygge,+Sogndal,+Norge"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="map-link">
-              <svg style="display:inline-block;width:1em;height:1em;vertical-align:middle;margin-right:.3em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Opne i Google Maps →
-            </a>
-          </div>
+          <form class="contact-form" id="cform" novalidate>
+            <div class="cfield">
+              <input type="text" id="cf-name" placeholder=" " required autocomplete="name">
+              <label for="cf-name">Ditt namn</label>
+            </div>
+
+            <div class="cfield">
+              <input type="email" id="cf-email" placeholder=" " required autocomplete="email">
+              <label for="cf-email">E-postadresse</label>
+            </div>
+
+            <div class="csel-wrap">
+              <select id="cf-topic">
+                <option value="Gjestebesøk / Overnatting">Gjestebesøk / Overnatting</option>
+                <option value="Årsleige">Årsleige</option>
+                <option value="Generell førespurnad">Generell førespurnad</option>
+                <option value="Anna">Anna</option>
+              </select>
+            </div>
+
+            <div class="cfield">
+              <textarea id="cf-msg" placeholder=" " rows="5" required></textarea>
+              <label for="cf-msg">Din melding</label>
+            </div>
+
+            <button type="submit" class="btn btn-main csubmit">
+              Send melding
+              <svg class="ico-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Info row: GOMARINA + location -->
+      <div class="info-row sr">
+        <div class="info-box app-box">
+          <h3><svg class="ibox-ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> GOMARINA-appen</h3>
+          <p>Betaling og oppdatert informasjon om plassane skjer enkelt via GOMARINA. Last ned appen for rask inn- og utsjekk, og alltid oppdaterte prisar.</p>
+          <br>
+          <span style="display:inline-block;padding:.5rem 1.4rem;border-radius:50px;background:linear-gradient(130deg,var(--blue),var(--teal));font-size:.85rem;font-weight:700;color:#fff">Last ned GOMARINA</span>
+        </div>
+
+        <div class="info-box">
+          <h3><svg class="ibox-ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Finn oss</h3>
+          <p>Sjøkanten Båtforening ligg midt mellom Hagelin-neset og Sogndalsfjøra — synleg ved innseilinga mot Sogndal sentrum. Lett tilgjengeleg frå fjorden.</p>
+          <a href="https://maps.google.com/?q=Sogndal+Gjestebrygge,+Sogndal,+Norge"
+             target="_blank" rel="noopener noreferrer" class="map-link">
+            <svg style="display:inline-block;width:1em;height:1em;vertical-align:middle;margin-right:.3em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Opne i Google Maps →
+          </a>
         </div>
       </div>
     </div>
@@ -1397,6 +1558,40 @@
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+    /* ---- Contact form ---- */
+    document.getElementById('cform').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name  = document.getElementById('cf-name').value.trim();
+      const email = document.getElementById('cf-email').value.trim();
+      const topic = document.getElementById('cf-topic').value;
+      const msg   = document.getElementById('cf-msg').value.trim();
+
+      if (!name || !email || !msg) {
+        // Shake invalid fields
+        [['cf-name', name], ['cf-email', email], ['cf-msg', msg]].forEach(([id, val]) => {
+          if (!val) {
+            const el = document.getElementById(id);
+            el.closest('.cfield').style.animation = 'none';
+            el.style.borderColor = '#e63946';
+            el.style.boxShadow   = '0 0 0 3px rgba(230,57,70,.2)';
+            setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2000);
+          }
+        });
+        return;
+      }
+
+      // Build mailto and open
+      const body = `Namn: ${name}\nE-post: ${email}\nEmne: ${topic}\n\n${msg}`;
+      const mailto = `mailto:sbf.sogndal@gmail.com?subject=${encodeURIComponent('Kontaktskjema: ' + topic)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+
+      // Show success overlay after brief delay
+      setTimeout(() => {
+        document.getElementById('cform').style.display = 'none';
+        document.getElementById('cform-ok').classList.add('show');
+      }, 400);
+    });
   </script>
 </body>
 </html>
