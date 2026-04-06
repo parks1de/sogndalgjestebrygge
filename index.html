@@ -1071,7 +1071,12 @@
       .about-imgs { height: 320px; }
       .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
       .price-grid { grid-template-columns: repeat(2, 1fr); }
+      /* No parallax overflow on mobile */
+      #hero-bg { inset: 0; }
     }
+
+    /* Prevent double-tap zoom delay on interactive cards */
+    .price-card { touch-action: manipulation; }
 
     @media (max-width: 640px) {
       .gal-grid { grid-template-columns: 1fr 1fr; }
@@ -1526,11 +1531,19 @@
       bc.appendChild(b);
     }
 
-    /* ---- Parallax hero ---- */
+    /* ---- Parallax hero (desktop pointer devices only) ---- */
     const hbg = document.getElementById('hero-bg');
-    window.addEventListener('scroll', () => {
-      hbg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
-    }, { passive: true });
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      let rafPending = false;
+      window.addEventListener('scroll', () => {
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(() => {
+          hbg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+          rafPending = false;
+        });
+      }, { passive: true });
+    }
 
     /* ---- Nav solidify ---- */
     const nav = document.getElementById('nav');
@@ -1567,23 +1580,21 @@
 
     document.querySelectorAll('[data-to]').forEach(el => cio.observe(el));
 
-    /* ---- 3D tilt ---- */
-    document.querySelectorAll('.fac-card, .price-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width  - 0.5;
-        const y = (e.clientY - r.top)  / r.height - 0.5;
-        card.style.transform =
-          `perspective(900px) rotateX(${-y*9}deg) rotateY(${x*9}deg) translateY(-12px) scale(1.03)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        // restore .star override
-        if (card.classList.contains('star')) {
+    /* ---- 3D tilt (fac-cards only, pointer devices only) ---- */
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      document.querySelectorAll('.fac-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width  - 0.5;
+          const y = (e.clientY - r.top)  / r.height - 0.5;
+          card.style.transform =
+            `perspective(900px) rotateX(${-y*9}deg) rotateY(${x*9}deg) translateY(-12px) scale(1.03)`;
+        });
+        card.addEventListener('mouseleave', () => {
           card.style.transform = '';
-        }
+        });
       });
-    });
+    }
 
     /* ---- Lightbox ---- */
     function openLb(item) {
@@ -1648,17 +1659,18 @@
         card.classList.add('picked');
 
         // Scroll to form
-        document.getElementById('kontakt').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const cform = document.getElementById('cform');
+        const targetY = cform.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
 
         // Pulse the form + focus name field after scroll settles
         setTimeout(() => {
-          const form = document.getElementById('cform');
-          form.classList.remove('form-pulse');
-          void form.offsetWidth; // reflow to restart animation
-          form.classList.add('form-pulse');
-          document.getElementById('cf-name').focus();
-          form.addEventListener('animationend', () => form.classList.remove('form-pulse'), { once: true });
-        }, 650);
+          cform.classList.remove('form-pulse');
+          void cform.offsetWidth; // reflow to restart animation
+          cform.classList.add('form-pulse');
+          document.getElementById('cf-name').focus({ preventScroll: true });
+          cform.addEventListener('animationend', () => cform.classList.remove('form-pulse'), { once: true });
+        }, 900);
       });
     });
 
