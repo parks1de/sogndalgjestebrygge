@@ -609,9 +609,45 @@
       backdrop-filter: blur(18px);
       position: relative;
       overflow: hidden;
+      cursor: pointer;
       transition: transform .4s var(--easing), box-shadow .4s, border-color .4s;
       will-change: transform;
     }
+
+    .price-cta {
+      margin-top: .9rem;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .3rem;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .3s, transform .3s;
+    }
+
+    .price-cta svg { width: .85rem; height: .85rem; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s var(--easing); }
+
+    .price-card:hover .price-cta          { opacity: 1; transform: translateY(0); }
+    .price-card:hover .price-cta svg      { transform: translateX(3px); }
+    .price-card.picked .price-cta         { opacity: 1; transform: translateY(0); color: var(--gold-lt); }
+    .price-card.picked .price-cta svg     { transform: translateX(3px); stroke: var(--gold-lt); }
+
+    .price-card.picked {
+      border-color: var(--teal) !important;
+      box-shadow: 0 0 0 2px rgba(0,180,216,.45), 0 24px 60px rgba(0,180,216,.25) !important;
+    }
+
+    @keyframes formPulse {
+      0%   { box-shadow: 0 0 0 0   rgba(0,180,216,.7); }
+      60%  { box-shadow: 0 0 0 10px rgba(0,180,216,.18); }
+      100% { box-shadow: 0 0 0 18px rgba(0,180,216,.0); }
+    }
+    .form-pulse { animation: formPulse .85s ease; border-radius: 18px; }
 
     .price-card:hover {
       transform: translateY(-12px) scale(1.03);
@@ -1272,49 +1308,55 @@
       </div>
 
       <div class="price-grid">
-        <div class="price-card sr d1">
+        <div class="price-card sr d1" data-prefill="dagsplass">
           <span class="price-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="9" x2="12" y2="2"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><polyline points="16 5 12 9 8 5"/></svg></span>
           <div class="price-name">Dagsplass</div>
           <div class="price-amt">50</div>
           <div class="price-per">kr · 3–10 timar</div>
+          <div class="price-cta">Spør om dette <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
         </div>
 
-        <div class="price-card sr d2">
+        <div class="price-card sr d2" data-prefill="u30">
           <span class="price-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M12 3 4 15h8"/><path d="M12 3l8 12h-8"/><path d="M3 19h18"/><path d="M5 16l7 3 7-3"/></svg></span>
           <div class="price-name">Under 30 fot</div>
           <div class="price-amt">200</div>
           <div class="price-per">kr / natt · under 9,4 m</div>
+          <div class="price-cta">Spør om dette <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
         </div>
 
-        <div class="price-card star sr d3">
+        <div class="price-card star sr d3" data-prefill="m3040">
           <div class="star-tag">Mest valt</div>
           <span class="price-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 16h14l-2-8H7z"/><path d="M12 8V5"/><path d="M9 5h6"/></svg></span>
           <div class="price-name">30–40 fot</div>
           <div class="price-amt">250</div>
           <div class="price-per">kr / natt · 9,4–12,5 m</div>
           <div class="price-note"><svg style="display:inline-block;width:.85em;height:.85em;vertical-align:middle;margin-right:.2em;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Straum inkludert</div>
+          <div class="price-cta">Spør om dette <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
         </div>
 
-        <div class="price-card sr d4">
+        <div class="price-card sr d4" data-prefill="o40">
           <span class="price-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M3 16h18l-2-10H5z"/><path d="M12 6V3"/><path d="M8 3h8"/><path d="M6 12h12"/></svg></span>
           <div class="price-name">Over 40 fot</div>
           <div class="price-amt">300</div>
           <div class="price-per">kr / natt · 12,5–18 m</div>
+          <div class="price-cta">Spør om dette <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
         </div>
 
-        <div class="price-card sr d5">
+        <div class="price-card sr d5" data-prefill="batteri">
           <span class="price-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><polyline points="7 12 10 8 10 12 13 12 10 16 10 12"/></svg></span>
           <div class="price-name">Batterilading</div>
           <div class="price-amt">50–80</div>
           <div class="price-per">kr / dag</div>
+          <div class="price-cta">Spør om dette <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
         </div>
 
-        <div class="price-card sr d6">
+        <div class="price-card sr d6" data-prefill="vatn">
           <span class="price-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
           <div class="price-name">Vatn (stor bruk)</div>
           <div class="price-amt">50</div>
           <div class="price-per">kr · tank / stor vask</div>
           <div class="price-note">Normal skylling gratis</div>
+          <div class="price-cta">Spør om dette <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
         </div>
       </div>
 
@@ -1558,6 +1600,67 @@
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+    /* ---- Price card → form prefill ---- */
+    const PREFILL = {
+      dagsplass: {
+        topic: 'Gjestebesøk / Overnatting',
+        msg:   'Hei,\n\nEg er interessert i dagsplass (3–10 timar, kr 50).\n\nKan de stadfeste tilgjengelegheit og sende meir info?\n\nMed venleg helsing,'
+      },
+      u30: {
+        topic: 'Gjestebesøk / Overnatting',
+        msg:   'Hei,\n\nEg er interessert i gjesteliggeplass for båt under 30 fot (under 9,4 m).\nPris: kr 200 / natt.\n\nKan de stadfeste tilgjengelegheit?\n\nMed venleg helsing,'
+      },
+      m3040: {
+        topic: 'Gjestebesøk / Overnatting',
+        msg:   'Hei,\n\nEg er interessert i gjesteliggeplass for båt mellom 30 og 40 fot (9,4–12,5 m).\nPris: kr 250 / natt (straum inkludert).\n\nKan de stadfeste tilgjengelegheit?\n\nMed venleg helsing,'
+      },
+      o40: {
+        topic: 'Gjestebesøk / Overnatting',
+        msg:   'Hei,\n\nEg er interessert i gjesteliggeplass for båt over 40 fot (12,5–18 m).\nPris: kr 300 / natt.\n\nKan de stadfeste tilgjengelegheit?\n\nMed venleg helsing,'
+      },
+      batteri: {
+        topic: 'Generell førespurnad',
+        msg:   'Hei,\n\nEg har spørsmål om batterilading (kr 50–80 / dag).\n\nKan de sende meir informasjon?\n\nMed venleg helsing,'
+      },
+      vatn: {
+        topic: 'Generell førespurnad',
+        msg:   'Hei,\n\nEg ønskjer informasjon om vasslevering (kr 50 for tank / stor vask).\n\nMed venleg helsing,'
+      }
+    };
+
+    document.querySelectorAll('.price-card[data-prefill]').forEach(card => {
+      card.addEventListener('click', () => {
+        const key  = card.dataset.prefill;
+        const data = PREFILL[key];
+        if (!data) return;
+
+        // Fill form fields
+        const sel = document.getElementById('cf-topic');
+        const txt = document.getElementById('cf-msg');
+        for (const opt of sel.options) {
+          if (opt.value === data.topic) { opt.selected = true; break; }
+        }
+        txt.value = data.msg;
+
+        // Mark card as picked, unmark others
+        document.querySelectorAll('.price-card').forEach(c => c.classList.remove('picked'));
+        card.classList.add('picked');
+
+        // Scroll to form
+        document.getElementById('kontakt').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Pulse the form + focus name field after scroll settles
+        setTimeout(() => {
+          const form = document.getElementById('cform');
+          form.classList.remove('form-pulse');
+          void form.offsetWidth; // reflow to restart animation
+          form.classList.add('form-pulse');
+          document.getElementById('cf-name').focus();
+          form.addEventListener('animationend', () => form.classList.remove('form-pulse'), { once: true });
+        }, 650);
+      });
+    });
 
     /* ---- Contact form ---- */
     document.getElementById('cform').addEventListener('submit', function(e) {
